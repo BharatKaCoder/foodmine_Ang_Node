@@ -1,0 +1,18 @@
+.rating {
+    display: flex;
+    align-items: center;
+  }
+  
+  .rating .fa {
+    font-size: 24px; /* Adjust size as needed */
+    color: gold; /* Color for filled stars */
+    margin: 0 2px; /* Space between stars */
+  }
+  
+  .rating .fa-star-o {
+    color: lightgray; /* Color for unfilled stars */
+  }
+  
+  .rating .fa-star-half-alt {
+    color: gold; /* Color for half-filled stars */
+  }
