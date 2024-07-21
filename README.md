@@ -12,4 +12,14 @@
     2. Add search route
     3. show search result in home component
     4. Generate search component
+
+4. Add tags
+    1. create tag madel
+    2. add sample tag to data.ts
+    3. food service
+        1. get all tags
+        2. get all food by tag name
+    4. add tag routes
+5. genearte tag component
     
+

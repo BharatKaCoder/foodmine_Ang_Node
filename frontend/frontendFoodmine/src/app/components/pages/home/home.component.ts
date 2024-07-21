@@ -7,11 +7,12 @@ import { RatingComponent } from './rating/rating.component';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { SearchComponent } from '../../partials/search/search.component';
+import { TagsComponent } from '../../partials/tags/tags.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, RatingComponent, CommonModule, SearchComponent],
+  imports: [MatCardModule, MatButtonModule, RatingComponent, CommonModule, SearchComponent, TagsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -29,6 +30,8 @@ export class HomeComponent {
     this._activatedRoute.params.subscribe((param)=>{
       if(param['searchTerm']) {
         this.foods = this._foodService.getAllFoodBySearch(param['searchTerm']);
+      } else if (param['tag']) {
+        this.foods = this._foodService.getAllFoodByTagName(param['tag'])
       } else {
         this.foods = this._foodService.getAllFood();
       }
