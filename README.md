@@ -20,6 +20,12 @@
         1. get all tags
         2. get all food by tag name
     4. add tag routes
-5. genearte tag component
-    
+    5. genearte tag component
+
+5. Food page
+    1. add method to food service
+    2. generate food page compoennt
+    3. Add route
+
+
 

@@ -1,0 +1,50 @@
+ 
+  .example-header-image {
+    background-size: cover;
+  }
+
+  .cards-container {
+    display: inline-block;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .example-card {
+    flex: 0 0 auto;
+    max-width: 400px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .example-card:hover {
+    transform: scale(1.05); /* Slightly enlarge the card */
+  }
+  
+  /* Optional: Style the card for better appearance */
+  .mat-card {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 1rem;
+  }
+
+  .origins-list {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap to the next line if they overflow */
+    gap: 8px; /* Space between items */
+  }
+  
+  .origin-item {
+    background-color: #f0f0f0; /* Light gray background */
+    border-radius: 4px; /* Rounded corners */
+    padding: 6px 10px; /* Padding for spacing */
+    margin: 2px; /* Margin between items */
+    font-size: 14px; /* Adjust font size if needed */
+    text-align: center; /* Center text inside each item */
+  }
+
+  .parent-container {
+    display: flex;
+    justify-content: center; /* Horizontally center the child */
+    align-items: center; /* Vertically center the child */
+  }

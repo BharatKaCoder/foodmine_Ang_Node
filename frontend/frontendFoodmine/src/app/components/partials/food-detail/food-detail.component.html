@@ -1,14 +1,8 @@
-<div class="parent-container">
-    <app-search></app-search>
-</div>
-<div class="parent-container">
-    <app-tags></app-tags>
-</div>
 @for (food of foods; track food) {
 <div class="cards-container">
     <mat-card class="example-card" appearance="outlined">
         <mat-card-header>
-            <a class="text-decoration-none d-flex justify-content-between align-items-center" routerLink="/food/{{food.id}}" (click)="openOverlay()">
+            <a class="text-decoration-none d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center flex-grow-1">
                     <mat-card-title class="me-2">{{food.name}}</mat-card-title>
                     <span Class="{'favorite': food.favorite, 'not': !food.favorite}" class="ms-2">
@@ -36,4 +30,3 @@
     </mat-card>
 </div>
 }
-<app-overlay *ngIf="showOverlay"></app-overlay>

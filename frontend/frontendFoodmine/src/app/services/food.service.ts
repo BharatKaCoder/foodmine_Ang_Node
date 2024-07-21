@@ -27,4 +27,8 @@ export class FoodService {
      this.getAllFood()
     :this.getAllFood().filter((filter)=> filter.tags?.includes(tag));
   }
+
+  getFoodDetailsById(id:string): Food[] {
+    return this.getAllFood().filter((filter)=> filter?.id.includes(id));
+  }
 }
