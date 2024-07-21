@@ -22,16 +22,16 @@ export class HomeComponent {
   constructor(
     private _foodService: FoodService,
     private _activatedRoute: ActivatedRoute) {
-      _activatedRoute.params.subscribe((param)=>{
-        if(param['searchTerm']) {
-          this.foods = this._foodService.getAllFoodBySearch(param['searchTerm']);
-        } else {
-          this.foods = this._foodService.getAllFood();
-        }
-      })
     }
 
   ngOnInit(): void {
     this.foods = this._foodService.getAllFood();
+    this._activatedRoute.params.subscribe((param)=>{
+      if(param['searchTerm']) {
+        this.foods = this._foodService.getAllFoodBySearch(param['searchTerm']);
+      } else {
+        this.foods = this._foodService.getAllFood();
+      }
+    })
   }
 }

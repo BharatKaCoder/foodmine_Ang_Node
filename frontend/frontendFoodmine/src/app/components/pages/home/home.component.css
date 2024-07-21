@@ -42,3 +42,9 @@
     font-size: 14px; /* Adjust font size if needed */
     text-align: center; /* Center text inside each item */
   }
+
+  .parent-container {
+    display: flex;
+    justify-content: center; /* Horizontally center the child */
+    align-items: center; /* Vertically center the child */
+  }
