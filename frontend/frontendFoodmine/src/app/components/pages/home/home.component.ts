@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { SearchComponent } from '../../partials/search/search.component';
 import { TagsComponent } from '../../partials/tags/tags.component';
-import { FoodDetailComponent } from '../../partials/food-detail/food-detail.component';
+import { FoodDetailComponent } from '../food-detail/food-detail.component';
 
 @Component({
   selector: 'app-home',

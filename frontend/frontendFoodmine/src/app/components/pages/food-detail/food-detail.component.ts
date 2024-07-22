@@ -5,7 +5,8 @@ import { ActivatedRoute, Data, Router, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { RatingComponent } from '../../pages/home/rating/rating.component';
+import { RatingComponent } from '../home/rating/rating.component';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-food-detail',
@@ -16,20 +17,21 @@ import { RatingComponent } from '../../pages/home/rating/rating.component';
 })
 export class FoodDetailComponent {
   foods?: Food[] = [];
-  cartList?: Food[] = [];
+  cartList?: any;
   parsedData?: any[];
   mergedArray?: any[];
   @Output() detailViewOpen = new EventEmitter<boolean>();
 
   constructor(
-    private _foodService:FoodService,
+    private _cartService:CartService,
     private _activatedRoute:ActivatedRoute,
     private _router:Router,
     private _cd:ChangeDetectorRef,
+    private _foodService:FoodService,
     ) {}
 
   ngOnInit():void {
-    this._foodService.foodData$.subscribe((slectedId)=>{
+    this._foodService.foodData$.subscribe((slectedId:any)=>{
       this.foods = slectedId;
       this._cd.detectChanges();
     });
@@ -45,6 +47,10 @@ export class FoodDetailComponent {
 
   addToCart(id:string) {
     this.cartList = this._foodService.getFoodDetailsById(id);
-    this._foodService.addToCartList(this.cartList);
+    this._cartService.addToCartList(this.cartList);
   }
+
+  // goToCart() {
+  //   this._router.navigate(['/food-page']);
+  // }
 }

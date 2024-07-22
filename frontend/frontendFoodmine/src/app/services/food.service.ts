@@ -39,11 +39,11 @@ export class FoodService {
     return this.getAllFood().filter((filter)=> filter?.id.includes(id));
   }
 
-  addToCartList(item:any) {
-    const currentItems:Food[] = this.getItem();
-    currentItems.push(item)
-    localStorage.setItem('cartList',JSON.stringify(currentItems));
-  }
+  // addToCartList(item:any) {
+  //   const currentItems:Food[] = this.getItem();
+  //   currentItems.push(item)
+  //   localStorage.setItem('cartList',JSON.stringify(currentItems));
+  // }
 
   getItem():Food[] {
     const item = localStorage.getItem('cartList');

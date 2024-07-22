@@ -26,6 +26,13 @@
     1. add method to food service
     2. generate food page compoennt
 
+6. create Cart functionality
+    1. create cartItem model
+    2. create cart model
+    3. generate cart service
+    4. add cart button in foodDetail page
+    5. create cart component
+
 
 
 
