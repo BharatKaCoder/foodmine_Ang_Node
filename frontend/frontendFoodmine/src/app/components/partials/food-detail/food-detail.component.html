@@ -1,32 +1,33 @@
-@for (food of foods; track food) {
-<div class="cards-container">
-    <mat-card class="example-card" appearance="outlined">
-        <mat-card-header>
-            <a class="text-decoration-none d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center flex-grow-1">
-                    <mat-card-title class="me-2">{{food.name}}</mat-card-title>
-                    <span Class="{'favorite': food.favorite, 'not': !food.favorite}" class="ms-2">
-                        <i class="fa-solid fa-heart"></i>
-                    </span>
-                </div>
-                <mat-card-subtitle class="text-end ms-3">{{food.cookTime}} (Min)</mat-card-subtitle>
-            </a>
-        </mat-card-header>
-        <img mat-card-image class="m-3" [src]="food.imageUrl" alt="Image of {{food.name}}">
-        <mat-card-content class="d-flex justify-content-between align-items-center">
-            <span>Ratings: {{food.stars}}</span>
-            <app-rating [rating]="food.stars"></app-rating>
-            <span class="text-end">{{food.price| currency:'INR':'symbol'}}/-</span>
-        </mat-card-content>
-        <mat-card-content class="d-flex mt-2 origins-list">
-            @for (origin of food.origins; track $index) {
-            <span class="origin-item">{{origin}}</span>
-            }
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-button>Wishlist</button>
-            <button mat-button>Place Order</button>
-        </mat-card-actions>
-    </mat-card>
-</div>
-}
+
+    @for (food of foods; track food) {
+    <div class="cards-container">
+        <mat-card class="example-card" appearance="outlined">
+            <mat-card-header>
+                <a class="text-decoration-none d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center flex-grow-1">
+                        <mat-card-title class="me-2">{{food.name}}</mat-card-title>
+                        <span Class="{'favorite': food.favorite, 'not': !food.favorite}" class="ms-2">
+                            <i class="fa-solid fa-heart"></i>
+                        </span>
+                    </div>
+                    <mat-card-subtitle class="text-end ms-3">{{food.cookTime}} (Min)</mat-card-subtitle>
+                   <button class="close-button mx-2 text-decoration-none" (click)="closeDetails($event)"><i class="fa-regular fa-circle-xmark fa-2x"></i></button>
+                </a>
+            </mat-card-header>
+            <img mat-card-image class="m-3" [src]="food.imageUrl" alt="Image of {{food.name}}">
+            <mat-card-content class="d-flex justify-content-between align-items-center">
+                <span>Ratings: {{food.stars}}</span>
+                <app-rating [rating]="food.stars"></app-rating>
+                <span class="text-end">{{food.price| currency:'INR':'symbol'}}/-</span>
+            </mat-card-content>
+            <mat-card-content class="d-flex mt-2 origins-list">
+                @for (origin of food.origins; track $index) {
+                <span class="origin-item">{{origin}}</span>
+                }
+            </mat-card-content>
+            <mat-card-actions class="justify-content-center">
+                <button class="btn btn-outline-info btn-sm px-5 addCartBtn" (click)="addToCart(food.id)">Add To Cart</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    }

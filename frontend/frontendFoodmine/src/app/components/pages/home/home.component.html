@@ -8,7 +8,7 @@
 <div class="cards-container">
     <mat-card class="example-card" appearance="outlined">
         <mat-card-header>
-            <a class="text-decoration-none d-flex justify-content-between align-items-center" routerLink="/food/{{food.id}}" (click)="openOverlay()">
+            <a class="text-decoration-none d-flex justify-content-between align-items-center" (click)="showFoodDetails(food.id)">
                 <div class="d-flex align-items-center flex-grow-1">
                     <mat-card-title class="me-2">{{food.name}}</mat-card-title>
                     <span Class="{'favorite': food.favorite, 'not': !food.favorite}" class="ms-2">
@@ -36,4 +36,7 @@
     </mat-card>
 </div>
 }
-<app-overlay *ngIf="showOverlay"></app-overlay>
+<!-- Overlay -->
+<div *ngIf="showOverlay" class="overlay" [ngClass]="{'active': selectedfood}">
+    <app-food-detail *ngIf="selectedfood" (detailViewOpen)="handleDetailViewOpen($event)"></app-food-detail>
+</div>

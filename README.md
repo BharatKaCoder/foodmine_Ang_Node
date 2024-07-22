@@ -22,10 +22,10 @@
     4. add tag routes
     5. genearte tag component
 
-5. Food page
+5. Food detail page
     1. add method to food service
     2. generate food page compoennt
-    3. Add route
+
 
 
 

@@ -17,10 +17,6 @@
     transition: transform 0.3s ease-in-out;
   }
 
-  .example-card:hover {
-    transform: scale(1.05); /* Slightly enlarge the card */
-  }
-  
   /* Optional: Style the card for better appearance */
   .mat-card {
     display: flex;
@@ -43,8 +39,22 @@
     text-align: center; /* Center text inside each item */
   }
 
+  /* close button */
+  .close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    margin-left: 20px; /* Push the button to the end */
+    color: gray;
+}
+
   .parent-container {
     display: flex;
     justify-content: center; /* Horizontally center the child */
     align-items: center; /* Vertically center the child */
+  }
+
+  .addCartBtn{
+    border-radius: 50PX;
   }

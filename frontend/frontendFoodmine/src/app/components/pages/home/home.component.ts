@@ -8,12 +8,12 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { SearchComponent } from '../../partials/search/search.component';
 import { TagsComponent } from '../../partials/tags/tags.component';
-import { OverlayComponent } from '../../partials/overlay/overlay.component';
+import { FoodDetailComponent } from '../../partials/food-detail/food-detail.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, RatingComponent, CommonModule, SearchComponent, TagsComponent, RouterLink, OverlayComponent,RouterModule],
+  imports: [MatCardModule, MatButtonModule, RatingComponent, CommonModule, SearchComponent, TagsComponent, RouterLink, FoodDetailComponent,RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -21,7 +21,10 @@ export class HomeComponent {
 
   foods:Food[] = [];
   customerRating: number = 0;
-  showOverlay: boolean = false;
+  selectedfoodId:Food[] = []; // To store the selected product details
+  selectedfood:boolean = false;
+  showOverlay = false;
+
   constructor(
     private _foodService: FoodService,
     private _activatedRoute: ActivatedRoute) {
@@ -40,7 +43,16 @@ export class HomeComponent {
     })
   }
 
-  openOverlay(): void {
+  showFoodDetails(foodId: any) {
     this.showOverlay = true;
+    this.selectedfood = true;
+    this.selectedfoodId = this._foodService.getFoodDetailsById(foodId);
+    this._foodService.updateFoodData(this.selectedfoodId);
+  }
+
+  handleDetailViewOpen(isOpen: boolean) {
+    if (!isOpen) {
+      this.showOverlay = false;
+    }
   }
 }
