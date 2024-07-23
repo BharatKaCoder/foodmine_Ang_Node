@@ -17,10 +17,15 @@
                     <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                 </li>
             </ul>
-            <ul class="nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link active position-relative" aria-current="page" routerLink="/cart-page">Cart
-                       <span class="badge text-bg-success">{{count}}</span>
+            <ul class="nav m-2 justify-content-end">
+                <li class="nav-item mr-5">
+                    <a  class="nav-link " class="text-decoration-none position-relative" routerLink="/cart-page">
+                        Cart
+                        @if (notification) {
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{notification}}
+                            </span>
+                        }
                     </a>
                 </li>
                 <li class="nav-item dropdown">

@@ -24,19 +24,20 @@ export class CartService {
     this.setCartItemToLocalStorage();
   }
 
-  removeFromCart(food:Food):void {
-    this.cart.item = this.cart.item.filter((filter)=>filter.food.id != food.id);
+  removeFromCart(food:any):void {
+    this.cart.item = this.cart.item.filter((filter:any)=>Array(filter)[0].food[0].id != Array(food)[0].food[0].id);
     this.setCartItemToLocalStorage();
   }
 
-  chnageQuantity(foodId:string, quantity:number):void {
-    let cartItem = this.cart.item.find((find)=> find.food.id === foodId);
+  changeQuantity(foodId: string, quantity: number): void {
+    let cartItem:any = this.cart.item.find((item:any) => item.food[0].id === foodId);
     if (!cartItem) {
-      return;
-    } else {
-      cartItem.quantity = quantity;
-      cartItem.price = quantity*cartItem.food.price;
+        console.error(`Food item with ID ${foodId} not found in cart.`);
+        return;
     }
+    cartItem.quantity = quantity;
+    cartItem.food[0].price = quantity * cartItem.food[0].price;
+    this.setCartItemToLocalStorage();
   }
 
   clearCart() {
@@ -49,15 +50,27 @@ export class CartService {
   }
 
   private setCartItemToLocalStorage():void {
-    this.cart.totalPrice = this.cart.item.reduce((preSum,currValue)=> preSum + currValue.price,0);
-    this.cart.totalCount = this.cart.item.reduce((preSum,currValue)=> preSum + currValue.quantity,0);
+    this.cart.totalPrice = this.cart.item.reduce((preSum:any, currentItem:any) => {
+      // Since each currentItem contains a 'food' array with potentially multiple items (though your JSON shows only one per cart item)
+      const itemPrice = currentItem.food.reduce((sum:any, foodItem:any) => {
+          return sum + foodItem.price;
+      }, 0);      
+      return preSum + itemPrice;
+    }, 0); 
+    this.cart.totalCount = this.cart.item.reduce((preSum:any, currentItem:any) => {
+      return preSum + currentItem.quantity;
+    }, 0);
     const setJSON = JSON.stringify(this.cart);
-    localStorage.setItem('cart',setJSON);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('cart',setJSON);
+    }
     this.cartSubject.next(this.cart);
   }
 
-  private getCartItemLocalStorage() {
-    const cartJSON = localStorage.getItem('cart');
-    return cartJSON? JSON.parse(cartJSON): new Cart();
+  public getCartItemLocalStorage() {
+    if (typeof localStorage !== 'undefined') {
+      const cartJSON = localStorage.getItem('cart');
+      return cartJSON? JSON.parse(cartJSON): new Cart();
+    }
   }
 }

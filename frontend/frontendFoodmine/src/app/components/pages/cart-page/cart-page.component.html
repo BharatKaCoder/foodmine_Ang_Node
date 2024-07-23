@@ -1,1 +1,95 @@
-<p>cart-page works!</p>
+<!-- <div class="container">
+    @if(cart) {
+    <div class="row container-fluid">
+        <div class="col-5">
+            @for(item of cart; track item) {
+            @for(food of item?.food; track food) {
+            <mat-card class="m-2" appearance="outlined">
+                <mat-card-header>
+                    <img mat-card-avatar class="example-header-image" [src]="food.imageUrl" [alt]="food.name">
+                    <mat-card-title>{{food.name}}</mat-card-title>
+                    <mat-card-subtitle>{{food.origins}}</mat-card-subtitle>
+                </mat-card-header>
+                <select class="form-select" aria-label=".form-select-sm example">
+                    <option selected>Qty</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="3">4</option>
+                    <option value="3">5</option>
+                </select>
+                <div>{{food.price | currency:'INR':'symbol'}}</div>
+                <mat-card-actions align="end">
+                    <button mat-button (click)="removeFromCart(item)">Remove</button>
+                </mat-card-actions>
+            </mat-card>
+            }
+            }
+        </div>
+        <div class="col-1"></div>
+        <div class="col-5 m-2">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h6 class="card-title">{{cartData.totalCount}}</h6>
+                    <h5 class="card-subtitle mb-2 text-muted">{{cartData.totalPrice}}</h5>
+                    <button routerLink="#" class="btn btn-success">Procced to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div> -->
+
+<div class="container">
+    <!-- Check if cart is defined -->
+    @if(cart) {
+        <div class="row">
+            <!-- Left column for displaying items -->
+            <div class="col-lg-5">
+                <!-- Loop through each item in cart -->
+                @for(item of cart; track item) {
+                    <!-- Loop through each food item in the current item -->
+                    @for(food of item?.food; track food) {
+                        <mat-card class="m-2 p-3" appearance="outlined">
+                            <mat-card-header class="d-flex justify-content-between">
+                                <img mat-card-avatar class="food-image" [src]="food.imageUrl" [alt]="food.name">
+                                <mat-card-title class="ml-0">{{food.name}}</mat-card-title>
+                                <mat-card-subtitle>{{food.origins.join(', ')}}</mat-card-subtitle>
+                                <div>{{food.quantity}}</div>
+                                <select #quantitySelect [value]="food.quantity" (change)="changeQuantity(item,quantitySelect.value)" class="form-select" aria-label=".form-select-sm example">Qty:
+                                    <!-- <option selected disabled>Qty</option> -->
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="3">4</option>
+                                    <option value="3">5</option>
+                                </select>
+                            </mat-card-header>
+                            <!-- Food price -->
+                            <div class="food-price">{{food.price | currency:'INR':'symbol'}}</div>
+                            <!-- Remove button -->
+                            <mat-card-actions align="end">
+                                <button mat-button class="btn btn-danger btn-sm" (click)="removeFromCart(item)">Remove</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    }
+                }
+            </div>
+            <!-- Middle column for spacing -->
+            <!-- <div class="col-lg-1"></div> -->
+            <!-- Right column for cart summary -->
+            <div class="col-lg-5 m-2">
+                <div class="card p-3">
+                    <div class="card-body">
+                        <!-- Total count of items -->
+                        <h6 class="card-title mb-3">Total Items: {{cartData.totalCount}}</h6>
+                        <!-- Total price -->
+                        <h5 class="card-subtitle mb-2 text-muted">Total Price: {{cartData.totalPrice | currency:'INR':'symbol'}}</h5>
+                        <!-- Proceed to checkout button -->
+                        <button routerLink="#" class="btn btn-success">Proceed to Checkout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

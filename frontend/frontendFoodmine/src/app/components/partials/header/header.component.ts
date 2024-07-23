@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FoodService } from '../../../services/food.service';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +11,13 @@ import { FoodService } from '../../../services/food.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  count:number = 0;
-  constructor(private _foodService: FoodService) {}
+  notification:number = 0;
+  constructor(private _foodService: FoodService, private _cartService:CartService ) {}
   ngOnInit() {
-    // const list:any = localStorage.getItem('cartList');
-    // let parsedData = this._foodService.getItem();
-    // console.log(parsedData)
+    this._cartService.getCartObservable().subscribe((cart:any)=>{
+      if (cart) {
+        this.notification = cart.item?.length;
+      }
+    });
   }
 }

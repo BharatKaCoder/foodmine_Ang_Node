@@ -40,7 +40,7 @@ export class FoodDetailComponent {
   closeDetails(ev:any) {
     if (ev) {
       this.detailViewOpen.emit(false);
-      this._router.navigate(['/'])
+      this._router.navigate(['/']);
       this.foods = []
     }
   }
@@ -48,6 +48,8 @@ export class FoodDetailComponent {
   addToCart(id:string) {
     this.cartList = this._foodService.getFoodDetailsById(id);
     this._cartService.addToCartList(this.cartList);
+    this.detailViewOpen.emit(false);
+    this._router.navigate(['/']);
   }
 
   // goToCart() {
