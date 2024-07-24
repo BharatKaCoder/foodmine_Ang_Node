@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+    justify-content: center; /* Center align horizontally */
+    align-items: center; /* Center align vertically */
+    height: 60vh; /* Adjust to your needs */
+}
+
+.container img {
+    max-width: 60%; /* Ensure the image doesn't exceed its container */
+    height: auto; /* Maintain aspect ratio */
+}

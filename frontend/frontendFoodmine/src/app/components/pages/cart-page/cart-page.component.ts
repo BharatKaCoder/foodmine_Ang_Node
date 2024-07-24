@@ -8,24 +8,31 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { EmptyPageComponent } from '../../partials/empty-page/empty-page.component';
 
 @Component({
   selector: 'app-cart-page',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule,FormsModule, MatFormFieldModule, CommonModule,RouterLink],
+  imports: [MatCardModule, MatButtonModule,FormsModule, MatFormFieldModule, CommonModule,RouterLink, EmptyPageComponent],
   templateUrl: './cart-page.component.html',
   styleUrl: './cart-page.component.css'
 })
 export class CartPageComponent {
   cart!:any[];
   cartData!:any;
+  showEmptyPage:boolean = false;
 
   constructor(private _cartService:CartService) {}
 
   ngOnInit():void {
     this._cartService.getCartObservable().subscribe((cart:any)=>{
+    if(cart && cart?.item.length) {
       this.cart = cart?.item;
       this.cartData = cart;
+      this.showEmptyPage = false;
+    } else {
+        this.showEmptyPage = true;
+      }
     });
   }
 
