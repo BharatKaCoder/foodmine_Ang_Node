@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { RatingComponent } from '../home/rating/rating.component';
 import { CartService } from '../../../services/cart.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-food-detail',
@@ -21,6 +22,7 @@ export class FoodDetailComponent {
   parsedData?: any[];
   mergedArray?: any[];
   @Output() detailViewOpen = new EventEmitter<boolean>();
+  subscription!:Subscription;
 
   constructor(
     private _cartService:CartService,
@@ -31,7 +33,7 @@ export class FoodDetailComponent {
     ) {}
 
   ngOnInit():void {
-    this._foodService.foodData$.subscribe((slectedId:any)=>{
+    this.subscription = this._foodService.foodData$.subscribe((slectedId:any)=>{
       this.foods = slectedId;
       this._cd.detectChanges();
     });
@@ -46,10 +48,18 @@ export class FoodDetailComponent {
   }
 
   addToCart(id:string) {
-    this.cartList = this._foodService.getFoodDetailsById(id);
-    this._cartService.addToCartList(this.cartList);
-    this.detailViewOpen.emit(false);
-    this._router.navigate(['/']);
+    this.subscription = this._foodService.getFoodDetailsById(id).subscribe((foodDetail)=>{
+      this.cartList = foodDetail;
+      this._cartService.addToCartList(this.cartList);
+      this.detailViewOpen.emit(false);
+      this._router.navigate(['/']);
+    })
+  }
+
+  ngOnDestroy() {
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   // goToCart() {

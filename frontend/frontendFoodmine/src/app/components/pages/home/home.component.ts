@@ -9,6 +9,7 @@ import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { SearchComponent } from '../../partials/search/search.component';
 import { TagsComponent } from '../../partials/tags/tags.component';
 import { FoodDetailComponent } from '../food-detail/food-detail.component';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -21,38 +22,51 @@ export class HomeComponent {
 
   foods:Food[] = [];
   customerRating: number = 0;
-  selectedfoodId:Food[] = []; // To store the selected product details
+  selectedfoodId:any[] = []; // To store the selected product details
   selectedfood:boolean = false;
   showOverlay = false;
+  subscription!:Subscription;
 
   constructor(
     private _foodService: FoodService,
     private _activatedRoute: ActivatedRoute) {
     }
-
-  ngOnInit(): void {
-    this.foods = this._foodService.getAllFood();
+    
+    ngOnInit(): void {
+    let foodObservable:Observable<Food[]>;
+    foodObservable = this._foodService.getAllFood();
     this._activatedRoute.params.subscribe((param)=>{
       if(param['searchTerm']) {
-        this.foods = this._foodService.getAllFoodBySearch(param['searchTerm']);
+        foodObservable = this._foodService.getAllFoodBySearch(param['searchTerm']);
       } else if (param['tag']) {
-        this.foods = this._foodService.getAllFoodByTagName(param['tag'])
+        foodObservable = this._foodService.getAllFoodByTagName(param['tag'])
       } else {
-        this.foods = this._foodService.getAllFood();
+        foodObservable = this._foodService.getAllFood();
       }
+      this.subscription = foodObservable.subscribe((subscribedFood)=>{
+        this.foods = subscribedFood;
+      })
     })
   }
 
   showFoodDetails(foodId: any) {
     this.showOverlay = true;
     this.selectedfood = true;
-    this.selectedfoodId = this._foodService.getFoodDetailsById(foodId);
-    this._foodService.updateFoodData(this.selectedfoodId);
+    this.subscription = this._foodService.getFoodDetailsById(foodId).subscribe((foodDetail)=>{
+      this.selectedfoodId = foodDetail;
+      this._foodService.updateFoodData(this.selectedfoodId);
+    });
   }
 
   handleDetailViewOpen(isOpen: boolean) {
     if (!isOpen) {
       this.showOverlay = false;
+    }
+  }
+
+  ngOnDestroy() {
+    if(this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }

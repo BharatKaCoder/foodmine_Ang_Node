@@ -35,6 +35,24 @@
 
 
 <!-- Creating backend -->
+1. creat backend folder
+2. npm init
+3. install typescript file
+4. create tsconfig.json
+5. create .ignore folder
+6. copy data.ts to backend/src
+7. npm install express cors
+8. create server.ts
+    1. install @types
+    2. create API's
+9. npm intsall nodemon and ts-node --save-dev
+10. Add url.ts to frontend
+11. Add http clint module
+
+12. login page
+    1. Generate comp
+    
+
 
 
 

@@ -2,61 +2,45 @@ import { Injectable } from '@angular/core';
 import { Food } from '../shared/models/food';
 import { sample_foods, sample_tags } from '../../data';
 import { Tag } from '../shared/models/tag';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { FOOD_BY_ID_URL, FOOD_BY_SEARCH_ID_URL, FOOD_BY_TAG_ID_URL, FOOD_TAG_URL, FOOD_URL } from '../shared/constant/url';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FoodService {
 
   private foodDataSubject = new BehaviorSubject<Food[]>([]);
   foodData$ = this.foodDataSubject.asObservable();
-  constructor() { }
+  constructor(private _http:HttpClient) { }
 
   updateFoodData(newData: Food[]) {
     this.foodDataSubject.next(newData);
   }
 
-  getAllFood(): Food[] {
-    return sample_foods;
+  getAllFood(): Observable<Food[]> {
+    // return sample_foods; //this just clint side file;
+    return this._http.get<Food[]>(FOOD_URL); //this is using api
   }
 
   getAllFoodBySearch(searchTerm:string) {
-    return this.getAllFood().filter((food)=> food.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    // return this.getAllFood().filter((food)=> food.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    return this._http.get<any>(FOOD_BY_SEARCH_ID_URL+searchTerm); //this is using api
   }
 
-  getAllTags():Tag[] {
-    return sample_tags
+  getAllTags():Observable<Tag[]> {
+    // return sample_tags
+    return this._http.get<Tag[]>(FOOD_TAG_URL); //this is using api
   }
 
-  getAllFoodByTagName(tag:string):Food[] {
-    return (tag === 'All')? 
-     this.getAllFood()
-    :this.getAllFood().filter((filter)=> filter.tags?.includes(tag));
+  getAllFoodByTagName(tag:string): Observable<Food[]> {
+    // return (tag === 'All')? this.getAllFood():this.getAllFood().filter((filter)=> filter.tags?.includes(tag));
+    return (tag === 'All')? this.getAllFood() : this._http.get<Food[]>(FOOD_BY_TAG_ID_URL+tag); //this is using api
   }
 
-  getFoodDetailsById(id:string): Food[] {
-    return this.getAllFood().filter((filter)=> filter?.id.includes(id));
-  }
-
-  // addToCartList(item:any) {
-  //   const currentItems:Food[] = this.getItem();
-  //   currentItems.push(item)
-  //   localStorage.setItem('cartList',JSON.stringify(currentItems));
-  // }
-
-  getItem():Food[] {
-    const item = localStorage.getItem('cartList');
-    return item? JSON.parse(item):[];
-  }
-
-  removeItemFromCart(index:number) {
-    const items = this.getItem();
-    items.splice(index,1)
-    localStorage.setItem('cartList',JSON.stringify(items));
-  }
-
-  clearCart(): void {
-    localStorage.removeItem('cartList');
+  getFoodDetailsById(id:string): Observable<any> {
+    // return this.getAllFood().filter((filter)=> filter?.id.includes(id));
+    return this._http.get<any>(FOOD_BY_ID_URL+id); //this is using api
   }
 }

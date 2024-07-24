@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Tag } from '../../../shared/models/tag';
 import { FoodService } from '../../../services/food.service';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tags',
@@ -12,10 +13,19 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 })
 export class TagsComponent {
   tags?:Tag[];
+  subscription!:Subscription;
 
   constructor(private _foodService:FoodService) {}
 
   ngOnInit():void {
-    this.tags = this._foodService.getAllTags();
+    this.subscription = this._foodService.getAllTags().subscribe((tags)=>{
+      this.tags = tags;
+    })
+  }
+
+  ngOnDestroy() {
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
