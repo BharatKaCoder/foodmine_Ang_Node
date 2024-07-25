@@ -1,9 +1,11 @@
-import express from 'express';
+import express, { json } from 'express';
 import cors from 'cors';
-import { sample_foods, sample_tags } from './data';
+import { sample_foods, sample_tags, sample_users } from './data';
+import _jwt from 'jsonwebtoken';
 
 const app = express();
 // setting up server
+app.use(express.json());
 app.use(cors({
     credentials:true,
     origin:["http://localhost:4200"]
@@ -38,6 +40,26 @@ app.get('/api/foods/:foodId',(req,res)=>{
     res.send(food);
 });
 
+app.post('/api/users/login',(req,res)=>{
+    const { email, password} = req.body;
+    const user = sample_users.find((find)=>find.email === email && find.password === password);
+    if (user) {
+        res.send(generateTokenResponse(user));
+    } else {
+        res.status(400).send("Email or Password is not valid!")
+    }
+});
+
+const generateTokenResponse = (user:any)=> {
+    const token = _jwt.sign({
+        email:user.email, isAdmin:user.isAdmin
+    },'user auth',{
+        expiresIn:"10d"
+    });
+    user.token = token;
+    return user.token;
+}
+
 app.listen(8080,()=>{
     console.log(`server started at http://localhost:${8080}`);
-})
+});
