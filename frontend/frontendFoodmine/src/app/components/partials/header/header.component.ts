@@ -5,11 +5,13 @@ import { CartService } from '../../../services/cart.service';
 import { UserService } from '../../../services/user.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { User } from '../../../shared/models/user';
+import { CommanService } from '../../../services/comman.service';
+import { LoginPageComponent } from '../../pages/login-page/login-page.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive,CommonModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive,CommonModule, LoginPageComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -22,6 +24,7 @@ export class HeaderComponent {
     private _foodService:FoodService, 
     private _cartService:CartService,
     private _userService:UserService,
+    private _commanService:CommanService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private _router:Router) 
   {}
@@ -45,5 +48,9 @@ export class HeaderComponent {
     if(isPlatformBrowser(this.platformId)) {
      this._userService.logout();
     }
+  }
+
+  headerLogin():any {
+    this._commanService.show();
   }
 }

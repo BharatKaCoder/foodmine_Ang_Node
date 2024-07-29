@@ -1,11 +1,40 @@
-.container {
-    display: flex;
-    justify-content: center; /* Center align horizontally */
-    align-items: center; /* Center align vertically */
-    height: 60vh; /* Adjust to your needs */
-}
 
-.container img {
-    max-width: 60%; /* Ensure the image doesn't exceed its container */
-    height: auto; /* Maintain aspect ratio */
-}
+/* Ensure full height and remove default margins */
+html, body {
+    margin: 0;
+    height: 100%;
+  }
+  
+  .container {
+    display: flex;               /* Enable Flexbox layout */
+    flex-direction: column;      /* Arrange children in a column */
+    justify-content: center;     /* Center vertically */
+    align-items: center;         /* Center horizontally */
+    height: 80vh;               /* Full viewport height */
+    text-align: center;          /* Center text within container */
+  }
+  
+  .container img {
+    max-width: 50%;              /* Ensure the image doesn't exceed 50% of its container */
+    height: auto;                /* Maintain aspect ratio */
+    margin-bottom: 20px;         /* Space between image and text */
+  }
+  
+  ul {
+    list-style-type: none;       /* Remove default list styling */
+    padding: 0;                  /* Remove default padding */
+  }
+  
+  .nav-link {
+    margin: 10px 0;              /* Vertical spacing between list items */
+  }
+  
+  a {
+    color: #28a745;              /* Green color for the link */
+    text-decoration: none;       /* Remove underline from links */
+  }
+  
+  a:hover {
+    text-decoration: underline;  /* Underline on hover */
+  }
+  

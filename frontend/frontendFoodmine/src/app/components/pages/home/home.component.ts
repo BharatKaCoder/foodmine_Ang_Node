@@ -10,11 +10,25 @@ import { SearchComponent } from '../../partials/search/search.component';
 import { TagsComponent } from '../../partials/tags/tags.component';
 import { FoodDetailComponent } from '../food-detail/food-detail.component';
 import { Observable, Subscription } from 'rxjs';
+import { CommanService } from '../../../services/comman.service';
+import { LoginPageComponent } from '../login-page/login-page.component';
+import { LoaderComponent } from '../../partials/loader/loader.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, RatingComponent, CommonModule, SearchComponent, TagsComponent, RouterLink, FoodDetailComponent,RouterModule],
+  imports: [
+    MatCardModule, 
+    MatButtonModule, 
+    RatingComponent, 
+    CommonModule, 
+    SearchComponent, 
+    TagsComponent, 
+    RouterLink, 
+    FoodDetailComponent,
+    RouterModule, 
+    LoginPageComponent,
+    LoaderComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -26,10 +40,13 @@ export class HomeComponent {
   selectedfood:boolean = false;
   showOverlay = false;
   subscription!:Subscription;
+  isLoginVisible: boolean = false;
+  isLoaderShow:boolean = false;
 
   constructor(
     private _foodService: FoodService,
-    private _activatedRoute: ActivatedRoute) {
+    private _activatedRoute: ActivatedRoute,
+    private _commanService: CommanService) {
     }
     
     ngOnInit(): void {
@@ -43,10 +60,24 @@ export class HomeComponent {
       } else {
         foodObservable = this._foodService.getAllFood();
       }
+
       this.subscription = foodObservable.subscribe((subscribedFood)=>{
         this.foods = subscribedFood;
-      })
+      });
+
+      this._commanService.isModalVisible$.subscribe(visible => {
+        this.isLoginVisible = visible;
+      });
+
+      this._commanService.loaderObservable$.subscribe((loader)=>{
+        this.isLoaderShow = loader;
+      });
+
     })
+  }
+
+  closeLogin() {
+    this._commanService.hide();
   }
 
   showFoodDetails(foodId: any) {

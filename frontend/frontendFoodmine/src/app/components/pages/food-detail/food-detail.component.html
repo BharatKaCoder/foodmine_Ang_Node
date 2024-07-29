@@ -28,6 +28,8 @@
             <mat-card-actions class="justify-content-center">
                 @if (isUserLogged) {
                     <button class="btn btn-info btn-sm px-5 mx-1 addCartBtn" (click)="addToCart(food.id)">Add To Cart</button>
+                }@else {
+                    <button class="btn btn-info btn-sm px-5 mx-1 addCartBtn" (click)="loginFormCalled()" >Login</button> 
                 }
                 <button class="btn btn-success btn-sm px-5 mx-1 addCartBtn" (click)="goToCart()" routerLink="/cart-page">Go To Cart</button>
                 </mat-card-actions>

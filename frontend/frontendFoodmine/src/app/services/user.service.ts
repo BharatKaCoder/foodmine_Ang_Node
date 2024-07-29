@@ -7,6 +7,7 @@ import { USER_LOGIN_URL } from '../shared/constant/url';
 import { ToastrService } from 'ngx-toastr';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
+import { CommanService } from './comman.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +16,10 @@ export class UserService {
   private userSubject = new BehaviorSubject<User>(this.getUserSessionStorage());
   public userObservable$ = this.userSubject.asObservable();
 
-  private loaderSubject = new BehaviorSubject<boolean>(false);
-  public loaderObservable$ = this.loaderSubject.asObservable();
   constructor(
     private _http:HttpClient, 
     private _toastr:ToastrService,
+    private _commanService:CommanService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private _router:Router ) { }
 
@@ -29,6 +29,7 @@ export class UserService {
         next: (user) => {
           this.setUserInSessionStorage(user);
           this.userSubject.next(user);
+          this._commanService.hide();
           this._toastr.success(
             `Welcome to foodStore ${user.name || 'User'}`,
             'Login Successfully'
@@ -44,7 +45,7 @@ export class UserService {
   logout() {
     this.userSubject.next(new User());
     sessionStorage.removeItem('LoggedUser');
-    window.location.reload();
+    this._toastr.error('You have been logged out');
     this._router.navigate(['/']);
   }
 
@@ -63,11 +64,4 @@ export class UserService {
     }
   }
 
-  showLoader() {
-    this.loaderSubject.next(true);
-  }
-
-  hideLoader() {
-    this.loaderSubject.next(false);
-  }
 }

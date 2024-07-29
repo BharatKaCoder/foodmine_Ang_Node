@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -11,6 +11,7 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { LoaderComponent } from '../../partials/loader/loader.component';
+import { CommanService } from '../../../services/comman.service';
 
 @Component({
   selector: 'app-login-page',
@@ -28,12 +29,15 @@ export class LoginPageComponent {
 
   isSubmitted: boolean = false;
   returnUrl:string = '';
+  @Input() isVisible: boolean = false;
+  @Output() closeModal = new EventEmitter<void>();
 
   constructor(
     private _fb: FormBuilder, 
     private _userService:UserService,
     private _activatedRoute:ActivatedRoute,
-    private _router:Router
+    private _router:Router,
+    private _commanService:CommanService
     ) {}
 
   ngOnInit(): void {
@@ -71,10 +75,14 @@ export class LoginPageComponent {
     if (this.loginForm.invalid) {
       return;
     } else {
-      this._userService.showLoader();
+      this._commanService.showLoader();
       this._userService.login({email:this.f['email'].value, password:this.f['password'].value})
       .subscribe(()=>{ this._router.navigateByUrl(this.returnUrl)});
-      this._userService.hideLoader();
+      this._commanService.hideLoader();
     }
+  }
+
+  close() {
+    this.closeModal.emit();
   }
 }

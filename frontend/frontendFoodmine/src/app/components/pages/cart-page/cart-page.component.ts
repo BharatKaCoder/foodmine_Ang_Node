@@ -37,7 +37,7 @@ export class CartPageComponent {
   }
 
   removeItemFromCart(cartItem:CartItem) {
-    this._cartService.removeFromCart(cartItem.food.id)
+    this._cartService.removeFromCart(cartItem.food.id);
   }
 
   changeQuantity(cartItem:any,qty:string) {

@@ -40,3 +40,6 @@
 <div *ngIf="showOverlay" class="overlay" [ngClass]="{'active': selectedfood}">
     <app-food-detail *ngIf="selectedfood" (detailViewOpen)="handleDetailViewOpen($event)"></app-food-detail>
 </div>
+
+<app-login-page [isVisible]="isLoginVisible" (closeModal)="closeLogin()"></app-login-page>
+<app-loader *ngIf="isLoaderShow"></app-loader>

@@ -10,6 +10,7 @@ import { CartService } from '../../../services/cart.service';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { CommanService } from '../../../services/comman.service';
 
 @Component({
   selector: 'app-food-detail',
@@ -34,6 +35,7 @@ export class FoodDetailComponent {
     private _cd:ChangeDetectorRef,
     private _foodService:FoodService,
     private _toastr:ToastrService,
+    private _commanService:CommanService
     ) {}
 
   ngOnInit():void {
@@ -61,6 +63,7 @@ export class FoodDetailComponent {
       this.cartList = foodDetail;
       this._cartService.addToCartList(this.cartList);
       this.detailViewOpen.emit(false);
+      this._toastr.success('Your food is added in cart!');
       this._router.navigate(['/']);
     })
   }
@@ -76,5 +79,9 @@ export class FoodDetailComponent {
       this._toastr.error('You need to login to complete action');
       this._router.navigate(['/'])
     }
+  }
+
+  loginFormCalled() {
+    this._commanService.show();
   }
 }
