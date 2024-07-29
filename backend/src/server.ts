@@ -1,7 +1,9 @@
-import express, { json } from 'express';
+import express from 'express';
 import cors from 'cors';
 import { sample_foods, sample_tags, sample_users } from './data';
-import _jwt from 'jsonwebtoken';
+// import _jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const app = express();
 // setting up server
@@ -40,25 +42,52 @@ app.get('/api/foods/:foodId',(req,res)=>{
     res.send(food);
 });
 
-app.post('/api/users/login',(req,res)=>{
-    const { email, password} = req.body;
-    const user = sample_users.find((find)=>find.email === email && find.password === password);
-    if (user) {
-        res.send(generateTokenResponse(user));
+// User login route
+app.post('/api/users/login', (req, res) => {
+    const { email, password } = req.body;
+
+    const user = sample_users.find(user => user.email === email);
+    if (user && bcrypt.compareSync(password, user.password)) {
+        // Generate and send token response
+        const token = generateTokenResponse(user);
+        res.json({ ...user, token });
     } else {
-        res.status(400).send("Email or Password is not valid!")
+        res.status(400).json({ error: "Email or Password is not valid!" });
     }
 });
 
-const generateTokenResponse = (user:any)=> {
-    const token = _jwt.sign({
-        email:user.email, isAdmin:user.isAdmin
-    },'user auth',{
-        expiresIn:"10d"
+// Generate JWT token
+const generateTokenResponse = (user:any) => {
+    const token = jwt.sign({
+        email: user.email,
+        isAdmin: user.isAdmin
+    }, process.env.JWT_SECRET || 'your_jwt_secret', {
+        expiresIn: '10d'
     });
-    user.token = token;
-    return user.token;
-}
+    return token;
+};
+
+// app.post('/api/users/login',(req,res)=>{
+//     const { email, password} = req.body;
+//     const user = sample_users.find((dt:any)=>dt.email === email && dt.password === password);
+//     if (user) {
+//         console.log('user==>',user)
+//         res.send(generateTokenResponse(user));
+//     } else {
+//         res.status(400).send("Email or Password is not valid!")
+//     }
+// });
+
+// const generateTokenResponse = (user:any)=> {
+//     const token = _jwt.sign({
+//         email:user.email, isAdmin:user.isAdmin
+//     },'user auth',{
+//         expiresIn:"10d"
+//     });
+//     user.token = token;
+//     console.log('user.token',user.token)
+//     return user.token;
+// }
 
 app.listen(8080,()=>{
     console.log(`server started at http://localhost:${8080}`);

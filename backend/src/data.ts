@@ -1,4 +1,5 @@
 
+import bcrypt from 'bcryptjs';
 export const sample_foods: any[] = [
   {
     id:'1',
@@ -82,16 +83,16 @@ export const sample_tags:any[] = [
 export const sample_users: any[] = [
   {
     name: "John Doe",
-    email: "john@gmail.com",
-    password: "1234567",
+    email: "rahul@gmail.com",
+    password: bcrypt.hashSync("1234567", 10),
     address: "mumbai",
     isAdmin: true,
   },
   {
-    name: "Jane Doe",
-    email: "Jane@gmail.com",
-    password: "1234567",
-    address: "ShangPunehai",
+    name: "Ram",
+    email: "ram@gmail.com",
+    password: bcrypt.hashSync("1234567", 10),
+    address: "Pune",
     isAdmin: false,
   },
 ];

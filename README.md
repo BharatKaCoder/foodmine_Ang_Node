@@ -52,6 +52,20 @@
 12. login page
     1. Generate comp
     2. add login api
+        1. use Json
+        2. Add jsonwebtoken
+        3. test using postmon/thunderclint
+    3. generate user servcie
+        1. gnerate user model
+        2. add user subject
+        3. add login method
+            1. add user urls
+            2. genearte IUserLogin interface
+            3. Add ngx-toaster
+                1. Import module
+                2. Import browserAnination madule
+                4. Add style in Angular.json
+
 
 
 

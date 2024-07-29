@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 import { RatingComponent } from '../home/rating/rating.component';
 import { CartService } from '../../../services/cart.service';
 import { Subscription } from 'rxjs';
+import { UserService } from '../../../services/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-food-detail',
@@ -23,13 +25,15 @@ export class FoodDetailComponent {
   mergedArray?: any[];
   @Output() detailViewOpen = new EventEmitter<boolean>();
   subscription!:Subscription;
+  isUserLogged:boolean = false;
 
   constructor(
     private _cartService:CartService,
-    private _activatedRoute:ActivatedRoute,
+    private _userService:UserService,
     private _router:Router,
     private _cd:ChangeDetectorRef,
     private _foodService:FoodService,
+    private _toastr:ToastrService,
     ) {}
 
   ngOnInit():void {
@@ -37,6 +41,11 @@ export class FoodDetailComponent {
       this.foods = slectedId;
       this._cd.detectChanges();
     });
+    this.subscription = this._userService.userObservable$.subscribe((newUser:any)=>{
+      if(newUser) {
+        this.isUserLogged = newUser.token? true : false;
+      }
+    })
   }
 
   closeDetails(ev:any) {
@@ -62,7 +71,10 @@ export class FoodDetailComponent {
     }
   }
 
-  // goToCart() {
-  //   this._router.navigate(['/food-page']);
-  // }
+  goToCart() {
+    if(!this.isUserLogged) {
+      this._toastr.error('You need to login to complete action');
+      this._router.navigate(['/'])
+    }
+  }
 }

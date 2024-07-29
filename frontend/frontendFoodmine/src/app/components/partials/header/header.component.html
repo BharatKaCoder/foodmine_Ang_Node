@@ -10,16 +10,18 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="">Home</a>
                 </li>
+                @if(!isExstingUser) {
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/login">Login</a>
+                    </li>
+                }
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                    <a class="nav-link">offers</a>
                 </li>
             </ul>
             <ul class="nav m-2 d-flex justify-content-end">
                 <li class="nav-item mx-3 d-flex align-items-center">
-                    <a  class="nav-link " class="text-decoration-none position-relative" routerLink="/cart-page">
+                    <a  [ngClass]="{'nav-link':userLogged,'disabled':userLogged}" class="text-decoration-none position-relative" routerLink="/cart-page">
                         Cart
                         @if (notification) {
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -28,20 +30,22 @@
                         }
                     </a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        More
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Orders</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
-                    </ul>
-                </li>
+                @if(isExstingUser) {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Welcome, {{UserName}}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Orders</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+                        </ul>
+                    </li>
+                }
             </ul>
         </div>
     </div>

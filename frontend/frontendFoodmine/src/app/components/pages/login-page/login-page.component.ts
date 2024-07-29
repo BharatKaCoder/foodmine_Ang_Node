@@ -8,12 +8,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { UserService } from '../../../services/user.service';
+import { LoaderComponent } from '../../partials/loader/loader.component';
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, CommonModule],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule,LoaderComponent ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css',
 })
@@ -25,14 +27,21 @@ export class LoginPageComponent {
   });
 
   isSubmitted: boolean = false;
+  returnUrl:string = '';
 
-  constructor(private _fb: FormBuilder) {}
+  constructor(
+    private _fb: FormBuilder, 
+    private _userService:UserService,
+    private _activatedRoute:ActivatedRoute,
+    private _router:Router
+    ) {}
 
   ngOnInit(): void {
     this.loginForm = this._fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
+    this.returnUrl = this._activatedRoute.snapshot.queryParams['returnUrl'];
   }
 
   get f(): { [key: string]: AbstractControl } {
@@ -61,6 +70,11 @@ export class LoginPageComponent {
     this.isSubmitted = true;
     if (this.loginForm.invalid) {
       return;
+    } else {
+      this._userService.showLoader();
+      this._userService.login({email:this.f['email'].value, password:this.f['password'].value})
+      .subscribe(()=>{ this._router.navigateByUrl(this.returnUrl)});
+      this._userService.hideLoader();
     }
   }
 }
