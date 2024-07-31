@@ -1,10 +1,11 @@
 import express from 'express';
 import cors from 'cors';
-import { sample_foods, sample_tags, sample_users } from './data';
-// import _jwt from 'jsonwebtoken';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-
+import FoodRouter from './routers/food.router';
+import UserRouter from './routers/user.router';
+import dotenv from 'dotenv';
+dotenv.config();
+import { dbConnect } from './configs/database.config';
+dbConnect();
 const app = express();
 // setting up server
 app.use(express.json());
@@ -13,81 +14,64 @@ app.use(cors({
     origin:["http://localhost:4200"]
 }));
 
-app.get('/api/foods',(req,res)=>{
-    res.send(sample_foods);
-});
+app.use('/api/foods',FoodRouter);
+app.use('/api/users',UserRouter);
 
-app.get('/api/foods/search/:searchTerm',(req,res)=>{
-    const searchTerm = req.params.searchTerm;
-    const foods = sample_foods
-    .filter((food:any)=> food.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    res.send(foods)
-})
 
-app.get('/api/foods/tags',(req,res)=>{
-    res.send(sample_tags);
-});
 
-app.get('/api/foods/tag/:tagName',(req,res)=>{
-    const tagName = req.params.tagName;
-    const foods = sample_foods
-    .filter((filter)=> filter.tags?.includes(tagName));
-    res.send(foods);
-});
+// app.get('/api/foods',(req,res)=>{
+//     res.send(sample_foods);
+// });
 
-app.get('/api/foods/:foodId',(req,res)=>{
-    const foodId = req.params.foodId;
-    const food = sample_foods
-    .filter((filter)=> filter?.id.includes(foodId));
-    res.send(food);
-});
+// app.get('/api/foods/search/:searchTerm',(req,res)=>{
+//     const searchTerm = req.params.searchTerm;
+//     const foods = sample_foods
+//     .filter((food:any)=> food.name.toLowerCase().includes(searchTerm.toLowerCase()))
+//     res.send(foods)
+// })
 
-// User login route
-app.post('/api/users/login', (req, res) => {
-    const { email, password } = req.body;
+// app.get('/api/foods/tags',(req,res)=>{
+//     res.send(sample_tags);
+// });
 
-    const user = sample_users.find(user => user.email === email);
-    if (user && bcrypt.compareSync(password, user.password)) {
-        // Generate and send token response
-        const token = generateTokenResponse(user);
-        res.json({ ...user, token });
-    } else {
-        res.status(400).json({ error: "Email or Password is not valid!" });
-    }
-});
+// app.get('/api/foods/tag/:tagName',(req,res)=>{
+//     const tagName = req.params.tagName;
+//     const foods = sample_foods
+//     .filter((filter)=> filter.tags?.includes(tagName));
+//     res.send(foods);
+// });
 
-// Generate JWT token
-const generateTokenResponse = (user:any) => {
-    const token = jwt.sign({
-        email: user.email,
-        isAdmin: user.isAdmin
-    }, process.env.JWT_SECRET || 'your_jwt_secret', {
-        expiresIn: '10d'
-    });
-    return token;
-};
+// app.get('/api/foods/:foodId',(req,res)=>{
+//     const foodId = req.params.foodId;
+//     const food = sample_foods
+//     .filter((filter)=> filter?.id.includes(foodId));
+//     res.send(food);
+// });
 
-// app.post('/api/users/login',(req,res)=>{
-//     const { email, password} = req.body;
-//     const user = sample_users.find((dt:any)=>dt.email === email && dt.password === password);
-//     if (user) {
-//         console.log('user==>',user)
-//         res.send(generateTokenResponse(user));
+// // User login route
+// app.post('/api/users/login', (req, res) => {
+//     const { email, password } = req.body;
+
+//     const user = sample_users.find(user => user.email === email);
+//     if (user && bcrypt.compareSync(password, user.password)) {
+//         // Generate and send token response
+//         const token = generateTokenResponse(user);
+//         res.json({ ...user, token });
 //     } else {
-//         res.status(400).send("Email or Password is not valid!")
+//         res.status(400).json({ error: "Email or Password is not valid!" });
 //     }
 // });
 
-// const generateTokenResponse = (user:any)=> {
-//     const token = _jwt.sign({
-//         email:user.email, isAdmin:user.isAdmin
-//     },'user auth',{
-//         expiresIn:"10d"
+// // Generate JWT token
+// const generateTokenResponse = (user:any) => {
+//     const token = jwt.sign({
+//         email: user.email,
+//         isAdmin: user.isAdmin
+//     }, process.env.JWT_SECRET || 'your_jwt_secret', {
+//         expiresIn: '10d'
 //     });
-//     user.token = token;
-//     console.log('user.token',user.token)
-//     return user.token;
-// }
+//     return token;
+// };
 
 app.listen(8080,()=>{
     console.log(`server started at http://localhost:${8080}`);

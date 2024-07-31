@@ -66,6 +66,21 @@
                 2. Import browserAnination madule
                 4. Add style in Angular.json
 
+13. connect to mongoDB
+    1. moving API's into router
+    2. create mongoDB altas
+    3. create .env file
+    4. Install
+        1. mongoose
+        2. dotenv
+        3. bcrypt js
+        4. jsonwebtoekn
+        5. express-async-handler
+    a. routers folder => is for all route file
+    b. configs folder => database connection setup
+    c. .env file => connection string and required url are there.
+    d. models folder => Model.ts file where we created interface
+
 
 
 
