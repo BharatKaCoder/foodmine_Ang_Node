@@ -87,7 +87,9 @@
     3. add register form
     4. register comp(login comp)
 
-
+15. loading
+    1. create ciomp, servcie
+    2. create interceptor
 
 
 

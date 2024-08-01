@@ -10,14 +10,14 @@ import { CommanService } from '../../../services/comman.service';
   styleUrl: './loader.component.css'
 })
 export class LoaderComponent {
-  isShowLoader:boolean = false;
+  isLoading!:boolean;
 
   constructor(private _commonSerice:CommanService) {
 
   }
   ngOnInit():void {
-    this._commonSerice.loaderObservable$.subscribe((loader)=>{
-      this.isShowLoader = loader;
-    })
+    this._commonSerice.isLoading.subscribe((loader:any)=>{
+      this.isLoading = loader;
+    });
   }
 }

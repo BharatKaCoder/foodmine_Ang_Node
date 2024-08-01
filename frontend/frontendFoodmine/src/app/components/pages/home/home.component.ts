@@ -69,10 +69,6 @@ export class HomeComponent {
         this.isLoginVisible = visible;
       });
 
-      this._commanService.loaderObservable$.subscribe((loader)=>{
-        this.isLoaderShow = loader;
-      });
-
     })
   }
 

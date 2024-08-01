@@ -10,7 +10,7 @@ export class CommanService {
   isModalVisible$ = this.modalVisibility.asObservable();
 
   private loaderSubject = new BehaviorSubject<boolean>(false);
-  public loaderObservable$ = this.loaderSubject.asObservable();
+  // public loaderObservable$ = this.loaderSubject.asObservable();
   constructor() { }
 
   show() {
@@ -27,5 +27,9 @@ export class CommanService {
 
   hideLoader() {
     this.loaderSubject.next(false);
+  }
+
+  get isLoading() {
+    return this.loaderSubject.asObservable();
   }
 }

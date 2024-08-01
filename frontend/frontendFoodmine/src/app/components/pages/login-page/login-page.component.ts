@@ -69,16 +69,16 @@ export class LoginPageComponent {
       password: ['', [Validators.required, Validators.minLength(5)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(5)]],
       address:['',[Validators.required]]
-    }, { validator: confirmPasswordValidator() });
+    }, { validator: confirmPasswordValidator('password','confirmPassword') });
   }
 
-  get password() {
-    return this.registerForm.get('password');
-  }
+  // get password() {
+  //   return this.registerForm.get('password');
+  // }
 
-  get confirmPassword() {
-    return this.registerForm.get('confirmPassword');
-  }
+  // get confirmPassword() {
+  //   return this.registerForm.get('confirmPassword');
+  // }
 
   get f(): { [key: string]: AbstractControl } {
     return this.loginForm.controls;
