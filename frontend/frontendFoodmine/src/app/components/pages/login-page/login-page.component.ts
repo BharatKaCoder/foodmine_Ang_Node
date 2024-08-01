@@ -12,6 +12,9 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { LoaderComponent } from '../../partials/loader/loader.component';
 import { CommanService } from '../../../services/comman.service';
+import { error } from 'node:console';
+import { delay, of } from 'rxjs';
+import { confirmPasswordValidator } from './confirm-password.validator';
 
 @Component({
   selector: 'app-login-page',
@@ -27,8 +30,19 @@ export class LoginPageComponent {
     password: new FormControl(''),
   });
 
+  registerForm: FormGroup = new FormGroup ({
+    name: new FormControl(''),
+    email: new FormControl(''),
+    address: new FormControl(''),
+    password: new FormControl(''),
+    confirmPassword: new FormControl(''),
+  });
+
   isSubmitted: boolean = false;
   returnUrl:string = '';
+  isRegSubmitted: boolean = false;
+  passwordFieldType:string = 'password';
+  passwordFieldIcon: string = '🙈';
   @Input() isVisible: boolean = false;
   @Output() closeModal = new EventEmitter<void>();
 
@@ -41,15 +55,37 @@ export class LoginPageComponent {
     ) {}
 
   ngOnInit(): void {
+    // login form 
     this.loginForm = this._fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(5)]],
     });
     this.returnUrl = this._activatedRoute.snapshot.queryParams['returnUrl'];
+
+    // registration form
+    this.registerForm = this._fb.group({
+      name: ['',[Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(5)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(5)]],
+      address:['',[Validators.required]]
+    }, { validator: confirmPasswordValidator() });
+  }
+
+  get password() {
+    return this.registerForm.get('password');
+  }
+
+  get confirmPassword() {
+    return this.registerForm.get('confirmPassword');
   }
 
   get f(): { [key: string]: AbstractControl } {
     return this.loginForm.controls;
+  }
+
+  get fun(): {[key:string]: AbstractControl } {
+    return this.registerForm.controls;
   }
 
   singInLink() {
@@ -70,8 +106,10 @@ export class LoginPageComponent {
     }
   }
 
+  // login submit button
   onSubmit() {
     this.isSubmitted = true;
+    this.isRegSubmitted = false;
     if (this.loginForm.invalid) {
       return;
     } else {
@@ -82,7 +120,34 @@ export class LoginPageComponent {
     }
   }
 
+  // registration submit button
+  regSubmit() {
+    this.isRegSubmitted = true;
+    this.isSubmitted = false;
+    if (this.registerForm.invalid) {
+      return;
+    } else {
+      this._userService.register({
+        name:this.fun['name'].value,
+        email:this.fun['email'].value,
+        address:this.fun['address'].value,
+        password:this.fun['password'].value,
+        confirmPassword:this.fun['confirmPassword'].value,
+      }).subscribe(()=> {
+        of('').pipe(delay(200)).subscribe(()=>{
+          this.singInLink();
+        })
+      });
+    }
+  }
+
   close() {
     this.closeModal.emit();
+  }
+
+  // password showhide functionality
+  togglePassword() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+    this.passwordFieldIcon = this.passwordFieldType === 'password' ? '🙈':'👁️';
   }
 }

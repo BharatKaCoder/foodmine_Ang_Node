@@ -3,11 +3,12 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../shared/models/user';
 import { IUserLogin } from '../shared/interfaces/IUserLogin';
 import { HttpClient } from '@angular/common/http';
-import { USER_LOGIN_URL } from '../shared/constant/url';
+import { USER_LOGIN_URL, USER_REGISTER_URL } from '../shared/constant/url';
 import { ToastrService } from 'ngx-toastr';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { CommanService } from './comman.service';
+import { IUserRegister } from '../shared/interfaces/IUserRegister';
 
 @Injectable({
   providedIn: 'root'
@@ -26,12 +27,12 @@ export class UserService {
   login(userLogin: IUserLogin): Observable<User> {
     return this._http.post<User>(USER_LOGIN_URL, userLogin).pipe(
       tap({
-        next: (user) => {
+        next: (user:any) => {
           this.setUserInSessionStorage(user);
           this.userSubject.next(user);
           this._commanService.hide();
           this._toastr.success(
-            `Welcome to foodStore ${user.name || 'User'}`,
+            `Welcome to foodStore ${user?.user.name || 'User'}`,
             'Login Successfully'
           );
         },
@@ -40,6 +41,24 @@ export class UserService {
         }
       })
     );
+  }
+
+  register(userResiter:IUserRegister):Observable<User> {
+    return this._http.post<User>(USER_REGISTER_URL,userResiter).pipe(
+      tap({
+        next:(user:any)=>{
+          this.setUserInSessionStorage(user);
+          this.userSubject.next(user);
+          this._toastr.success(
+            `Welcome to foodStore ${user?.user.name || 'User'}`,
+            `Successfully registered, Please logged in again!`
+          )
+        },
+        error:(err)=>{ 
+          this._toastr.error( err.error.error,`Registration failed`);
+        }
+      })
+    )
   }
 
   logout() {

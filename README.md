@@ -81,6 +81,12 @@
     c. .env file => connection string and required url are there.
     d. models folder => Model.ts file where we created interface
 
+14. register user
+    1. create registration api
+    2. add register in service
+    3. add register form
+    4. register comp(login comp)
+
 
 
 

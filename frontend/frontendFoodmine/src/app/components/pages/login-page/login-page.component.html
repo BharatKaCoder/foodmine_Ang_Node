@@ -1,31 +1,88 @@
 <div class="modal-overlay" *ngIf="isVisible">
     <div class="modal-content">
-        <button (click)="close()">Close</button>
+        <button class="close-button" (click)="close()"><i class="fa-regular fa-circle-xmark fa-2x"></i></button>
         <div class="container-fluid">
             <div class="wrapper">
+                <!-- singup form start here -->
                 <div class="form-wrapper sign-up">
-                    <form action="">
+                    <form action="" [formGroup]="registerForm" (ngSubmit)="regSubmit()">
                         <h2>Sign Up</h2>
                         <div class="input-group">
-                            <input type="text" required>
-                            <label for="">Username</label>
+                            <input type="text" required formControlName="name"
+                            [ngClass]="{ 'is-invalid': isRegSubmitted && fun['name'].errors }">
+                            <label for="">Name</label>
+                            @if (isRegSubmitted && fun['name'].errors) {
+                                <div class="text-danger fs-6">
+                                    @if (fun['name'].errors['required']) {
+                                    <div>Name is required.</div>
+                                    }
+                                </div>
+                            }
                         </div>
                         <div class="input-group">
-                            <input type="email" required>
+                            <input type="email" required formControlName="email"
+                            [ngClass]="{'is-invalid': isRegSubmitted && fun['email'].errors }">
                             <label for="">Email</label>
+                            @if (isRegSubmitted && fun['email'].errors) {
+                                <div class="text-danger fs-6">
+                                    @if (fun['email'].errors['required']) {
+                                    <div>Email is required.</div>
+                                    }
+                                </div>
+                            }
                         </div>
                         <div class="input-group">
-                            <input type="password" required>
-                            <label for="">Password</label>
+                            <input type="text" required formControlName="address"
+                            [ngClass]="{'is-invalid': isRegSubmitted && fun['address'].errors }">
+                            <label for="">Address</label>
+                            @if (isRegSubmitted && fun['address'].errors) {
+                                <div class="text-danger fs-6">
+                                    @if (fun['address'].errors['required']) {
+                                    <div>Address is required.</div>
+                                    }
+                                </div>
+                            }
                         </div>
-                        <button type="submit" class="btn">Sign Up</button>
+                        <div class="input-group position-relative">
+                            <input [type]="passwordFieldType" required formControlName="password"
+                            [ngClass]="{ 'is-invalid': isRegSubmitted && fun['password'].errors }">
+                            <button type="button" id=""(click)="togglePassword()" class="toggle-password">
+                                <span>{{ passwordFieldIcon }}</span>
+                            </button>
+                            <label for="">Password</label>
+                            @if (isRegSubmitted && fun['password'].errors) {
+                                <div class="text-danger fs-6">
+                                    @if (fun['password'].errors['required']) {
+                                    <div>password is required.</div>
+                                    }
+                                    @if(fun['password'].errors['minlength']) {
+                                    <div>Password must be more than 6 charactors.</div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <div class="input-group">
+                            <input type="password" required formControlName="confirmPassword">
+                            <label for="">Confirm password</label>
+                            @if (isRegSubmitted && fun['confirmPassword'].errors) {
+                                <div class="text-danger fs-6">
+                                    @if (fun['confirmPassword'].errors['required']) {
+                                    <div>Confirm password is required.</div>
+                                    }
+                                    @if(fun['confirmPassword'].errors['mismatch']) {
+                                    <div>Passwords must match.</div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <button type="submit" class="btn" [disabled]="!registerForm.valid">Sign Up</button>
                         <div class="sign-link">
                             <p>Already have an account? <a (click)="singInLink()"
                                     class="signIn-link">Sign In</a></p>
                         </div>
                     </form>
                 </div>
-
+            <!-- login for start from here -->
                 <div class="form-wrapper sign-in">
                     <form action="" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                         <h2>Login</h2>
@@ -44,9 +101,12 @@
                             </div>
                             }
                         </div>
-                        <div class="input-group">
-                            <input type="password" required formControlName="password"
+                        <div class="input-group position-relative">
+                            <input [type]="passwordFieldType" required formControlName="password"
                                 [ngClass]="{ 'is-invalid': isSubmitted && f['password'].errors }">
+                            <button type="button" id=""(click)="togglePassword()" class="toggle-password">
+                                <span>{{ passwordFieldIcon }}</span>
+                            </button>
                             <label for="">Password</label>
                             @if (isSubmitted && f['password'].errors) {
                             <div class="text-danger fs-6">

@@ -29,31 +29,29 @@ router.get('/search/:searchTerm', asynHandler(
     res.send(foods);
 }));
 
-router.get('/tags',asynHandler(
-    async (req,res)=>{
-    const tags = await FoodModel.aggregate([
-        { $unwind: '$tags'},
-        {
-            $group:{
-                _id:'$tags',
-                count:{ $sum:1}
-            }
-        },
-        {
-            $project:{
-                _id:0,
-                name:'$_id',
-                count:'$count'
-            }
-        }
-    ]).sort({count:-1});
+router.get('/tags', asynHandler(async (req, res) => {
+    try {
+        // Aggregation pipeline to get the tags and their counts
+        const tags = await FoodModel.aggregate([
+            { $unwind: '$tags' },
+            { $group: { _id: '$tags', count: { $sum: 1 } } },
+            { $project: { _id: 0, name: '$_id', count: '$count' } }
+        ]).sort({ count: -1 });
 
-    const all = {
-        name: 'All',
-        count: await FoodModel.countDocuments() 
+        // Count all documents
+        const totalCount = await FoodModel.countDocuments();
+
+        // Prepend the 'All' tag
+        const allTag = { name: 'All', count: totalCount };
+        tags.unshift(allTag);
+
+        // Send the response
+        res.json(tags);
+    } catch (error) {
+        // Handle any errors that occur
+        console.error('Error fetching tags:', error);
+        res.status(500).json({ error: 'An error occurred while fetching tags.' });
     }
-    tags.unshift(all);
-    res.send(tags);
 }));
 
 router.get('/tag/:tagName',asynHandler(

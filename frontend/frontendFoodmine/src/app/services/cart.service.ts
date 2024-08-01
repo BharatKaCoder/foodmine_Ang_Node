@@ -54,7 +54,7 @@ export class CartService {
   private setCartItemToLocalStorage():void {
     this.cart.totalPrice = this.cart.item.reduce((preSum:any, currentItem:any) => {
       // Since each currentItem contains a 'food' array with potentially multiple items (though your JSON shows only one per cart item)
-      const itemPrice = currentItem.food.reduce((sum:any, foodItem:any) => {
+      const itemPrice = [currentItem.food].reduce((sum:any, foodItem:any) => {
           return sum + foodItem.price;
       }, 0);      
       return preSum + itemPrice;

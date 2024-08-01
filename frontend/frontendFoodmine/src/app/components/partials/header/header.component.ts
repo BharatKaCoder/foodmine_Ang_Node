@@ -37,7 +37,7 @@ export class HeaderComponent {
     });
     this._userService.userObservable$.subscribe((newUser:any)=>{
       if(newUser) {
-        this.UserName = newUser.name;
+        this.UserName = newUser.user?.name;
         this.isExstingUser = newUser.token;
         this.userLogged = this.isExstingUser ? false: true;
       }

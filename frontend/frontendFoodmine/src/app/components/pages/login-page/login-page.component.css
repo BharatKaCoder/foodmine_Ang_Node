@@ -21,7 +21,7 @@
 .wrapper {
     position: relative;
     width: 400px;
-    height: 500px;
+    height: 600px;
 }
 
 /* Form color */
@@ -222,3 +222,31 @@ h2 {
   .signIn-link {
     cursor: pointer;
   }
+
+  .close-button {
+    position: absolute; /* Position it absolutely within the modal content */
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    background: none; /* Remove default button background */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Change cursor to pointer */
+    font-size: 20px; /* Adjust size as needed */
+}
+
+.toggle-password {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:focus {
+    outline: none;
+}

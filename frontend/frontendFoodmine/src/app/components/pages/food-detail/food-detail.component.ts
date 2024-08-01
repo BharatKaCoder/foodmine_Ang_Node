@@ -40,8 +40,7 @@ export class FoodDetailComponent {
 
   ngOnInit():void {
     this.subscription = this._foodService.foodData$.subscribe((slectedId:any)=>{
-      this.foods = slectedId;
-      this._cd.detectChanges();
+      this.foods = [slectedId];
     });
     this.subscription = this._userService.userObservable$.subscribe((newUser:any)=>{
       if(newUser) {
