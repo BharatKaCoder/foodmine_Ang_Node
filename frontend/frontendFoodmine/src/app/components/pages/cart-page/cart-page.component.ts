@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Cart } from '../../../shared/models/cart';
 import { CartService } from '../../../services/cart.service';
-import { CartItem } from '../../../shared/models/CartItems';
+import { CartItem } from '../../../shared/models/CartItems'; // Ensure correct import
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { EmptyPageComponent } from '../../partials/empty-page/empty-page.component';
@@ -13,39 +13,38 @@ import { EmptyPageComponent } from '../../partials/empty-page/empty-page.compone
 @Component({
   selector: 'app-cart-page',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule,FormsModule, MatFormFieldModule, CommonModule,RouterLink, EmptyPageComponent],
+  imports: [MatCardModule, MatButtonModule, FormsModule, MatFormFieldModule, CommonModule, RouterLink, EmptyPageComponent],
   templateUrl: './cart-page.component.html',
-  styleUrl: './cart-page.component.css'
+  styleUrls: ['./cart-page.component.css'] // Corrected from styleUrl to styleUrls
 })
 export class CartPageComponent {
-  cart!:any[];
-  cartData!:any;
-  showEmptyPage:boolean = false;
+  cart: CartItem[] = []; // Use specific type
+  cartData: Cart | undefined; // Use specific type
+  showEmptyPage: boolean = false;
 
-  constructor(private _cartService:CartService) {}
+  constructor(private _cartService: CartService) {}
 
-  ngOnInit():void {
-    this._cartService.getCartObservable().subscribe((cart:any)=>{
-    if(cart && cart?.item.length) {
-      this.cart = cart?.item;
-      this.cartData = cart;
-      this.showEmptyPage = false;
-    } else {
+  ngOnInit(): void {
+    this._cartService.getCartObservable().subscribe((cart: Cart) => {
+      if (cart && cart.item.length) {
+        this.cart = cart.item;
+        this.cartData = cart;
+        this.showEmptyPage = false;
+      } else {
         this.showEmptyPage = true;
       }
     });
   }
 
-  removeItemFromCart(cartItem:CartItem) {
-    this._cartService.removeFromCart(cartItem.food.id);
+  removeItemFromCart(cartItem: CartItem): void {
+    this._cartService.removeFromCart(cartItem);
   }
 
-  changeQuantity(cartItem:any,qty:string) {
-    const quantity = parseInt(qty);
-    this._cartService.changeQuantity(cartItem.food[0].id,quantity);
-  }
-
-  removeFromCart(item:any) {
-    this._cartService.removeFromCart(item);
+  changeQuantity(cartItem: CartItem, qty: string): void {
+    const quantity = parseInt(qty, 10); // Specify radix for parseInt
+    if (!isNaN(quantity)) { // Check if quantity is a valid number
+      this._cartService.changeQuantity(cartItem.food.id, quantity); // Use _id instead of id
+    }
   }
 }
+
