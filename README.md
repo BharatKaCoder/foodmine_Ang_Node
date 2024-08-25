@@ -91,6 +91,26 @@
     1. create ciomp, servcie
     2. create interceptor
 
+16. create checkout page
+    1. create order model
+    2. create checkput comp
+        1.Add to router
+    3. Add user to user service
+
+17. Save order
+    1. add order model
+    2. add order status enum
+    3. add auth middleware
+    4. add order middleware
+    5. add order router
+        1. add ccreate api
+    6. add order url to url.ts
+    7. add order service
+        1. add crete method
+    8. add auth inceptor
+
+    
+
 
 
 

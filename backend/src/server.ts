@@ -2,20 +2,27 @@ import express from 'express';
 import cors from 'cors';
 import FoodRouter from './routers/food.router';
 import UserRouter from './routers/user.router';
+import OrderRouter from './routers/order.router';
 import dotenv from 'dotenv';
 dotenv.config();
 import { dbConnect } from './configs/database.config';
+// import authenticateToken from './middleware/auth.mid';
 dbConnect();
 const app = express();
 // setting up server
 app.use(express.json());
+// Apply the authentication middleware
+// app.use(authenticateToken);
 app.use(cors({
     credentials:true,
-    origin:["http://localhost:4200"]
+    origin: ['http://localhost:4200'], // Allow only specific origin
+    // methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
+    // allowedHeaders: ['Content-Type', 'access_token'] // Allow specific headers
 }));
 
 app.use('/api/foods',FoodRouter);
 app.use('/api/users',UserRouter);
+app.use('/api/orders',OrderRouter);
 
 
 

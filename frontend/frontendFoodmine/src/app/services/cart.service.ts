@@ -78,5 +78,9 @@ export class CartService {
     }
     return new Cart(); // Return an empty cart if localStorage is not available
   }
+
+  getCart():Cart {
+    return this.cartSubject.value;
+  }
 }
 

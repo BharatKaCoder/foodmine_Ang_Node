@@ -83,4 +83,7 @@ export class UserService {
     }
   }
 
+  currentUser():User {
+    return this.userSubject.value;
+  } 
 }

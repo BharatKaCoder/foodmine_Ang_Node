@@ -46,7 +46,7 @@
                         <div class="input-group position-relative">
                             <input [type]="passwordFieldType" required formControlName="password"
                             [ngClass]="{ 'is-invalid': isRegSubmitted && fun['password'].errors }">
-                            <button type="button" id=""(click)="togglePassword()" class="toggle-password">
+                            <button type="button"(click)="togglePassword()" class="toggle-password">
                                 <span>{{ passwordFieldIcon }}</span>
                             </button>
                             <label for="">Password</label>
@@ -104,7 +104,7 @@
                         <div class="input-group position-relative">
                             <input [type]="passwordFieldType" required formControlName="password"
                                 [ngClass]="{ 'is-invalid': isSubmitted && f['password'].errors }">
-                            <button type="button" id=""(click)="togglePassword()" class="toggle-password">
+                            <button type="button" (click)="togglePassword()" class="toggle-password">
                                 <span>{{ passwordFieldIcon }}</span>
                             </button>
                             <label for="">Password</label>
